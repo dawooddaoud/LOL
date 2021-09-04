@@ -4,7 +4,7 @@ from apikey import my_region as euw
 import json
 import requests
 import datetime
-import csv
+from csv import writer
 import pandas as pd
 import time
 # ChampionID to Names
@@ -110,13 +110,16 @@ while True:
         print('Game' + str(count), 'Retrieved')
     break
 # Make csv_file using game_stats_list
-csv_file = acct + '.csv'
+current_time = time.time()
+epoch_time = current_time
+local_time = time.ctime(epoch_time)
+local_time = local_time.replace(":","_")
+csv_file = acct +" " + local_time + '.csv'
 with open(csv_file, 'w') as f:
-    writer = csv.writer(f)
-    try:
-        writer.writerows(game_stats_list)
-    except:
-        quit()
+    writer = writer(f)
+    writer.writerows(game_stats_list)
+    f.close()
+
 print('Generating Report.....')
 time.sleep(0.4)
 # Calculating average using pandas lib
